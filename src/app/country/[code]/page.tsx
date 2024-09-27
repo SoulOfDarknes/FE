@@ -1,5 +1,6 @@
 'use client';
 
+import styles from './page.module.css';
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { useGetCountryInfoQuery } from '../../../../services/countryApi';
@@ -18,18 +19,18 @@ const CountryInfoPage: React.FC = () => {
   const code = params.code as string;
 
   if (!code) {
-    return <div>Код країни не визначено.</div>;
+    return <div>The country code is not defined.</div>;
   }
 
   const { data: countryInfo, error, isLoading } = useGetCountryInfoQuery(code);
 
-  if (isLoading) return <div>Завантаження...</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (error) {
-    console.error('Помилка при отриманні даних:', error);
-    return <div>Сталася помилка при завантаженні даних.</div>;
+    console.error('Error when receiving data:', error);
+    return <div>An error occurred while uploading data.</div>;
   }
 
-  if (!countryInfo) return <div>Країна не знайдена.</div>;
+  if (!countryInfo) return <div>Country not found.</div>;
 
   const formattedPopulationData = countryInfo.populationData.map((data) => ({
     year: data.year,
@@ -37,7 +38,7 @@ const CountryInfoPage: React.FC = () => {
   }));
 
   return (
-    <div>
+    <div className={styles.country}>
       <h1>
         {countryInfo.countryName} ({countryInfo.countryCode})
       </h1>
@@ -47,7 +48,7 @@ const CountryInfoPage: React.FC = () => {
         width="200"
       />
 
-      <h2>Сусідні країни:</h2>
+      <h2>Neighbouring countries:</h2>
       {countryInfo.borderCountries.length > 0 ? (
         <ul>
           {countryInfo.borderCountries.map((borderCountry) => (
@@ -59,10 +60,10 @@ const CountryInfoPage: React.FC = () => {
           ))}
         </ul>
       ) : (
-        <p>Ця країна не має сусідніх країн.</p>
+        <p>This country has no neighbouring countries.</p>
       )}
 
-      <h2>Графік населення:</h2>
+      <h2>Graph of population:</h2>
       <LineChart
         width={600}
         height={300}

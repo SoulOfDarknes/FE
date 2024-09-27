@@ -7,22 +7,22 @@ import { useGetAvailableCountriesQuery } from '../../services/countryApi';
 const HomePage: React.FC = () => {
   const { data: countries, error, isLoading } = useGetAvailableCountriesQuery();
 
-  if (isLoading) return <div>Завантаження...</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (error) {
-    console.error('Помилка при отриманні даних:', error);
-    return <div>Сталася помилка при завантаженні даних.</div>;
+    console.error('Error when receiving data:', error);
+    return <div>An error occurred while uploading data.</div>;
   }
 
   return (
     <div>
-      <h1>Список країн</h1>
+      <header><h1><a href="/">List of countries</a></h1></header>
       <ul>
         {countries?.map((country) => (
-          <li key={country.countryCode}>
-            <Link href={`/country/${country.countryCode}`}>
+          <Link href={`/country/${country.countryCode}`}>
+            <li key={country.countryCode}>
               {country.name} ({country.countryCode})
-            </Link>
-          </li>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>
